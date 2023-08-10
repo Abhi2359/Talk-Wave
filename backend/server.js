@@ -3,17 +3,10 @@ const express = require("express");
 const chats = require("./data/data");
 const app = express();
 
-app.get("/", (req, res) => {
-    const response = chats.map((chat) => {
-    return chat.users;
-  });
+app.get("/api/chat", (req, res) => {
+   res.send(chats)
+});
 
-  res.send(response);
-});
-app.get("/api/chat/:id", (req, res) => {
-  const singleChat = chats.find((c) => c._id === req.params.id);
-  res.send(singleChat);
-});
 
 const port  = 5000;
       app.listen(port, () => {
