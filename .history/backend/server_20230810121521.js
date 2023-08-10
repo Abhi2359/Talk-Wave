@@ -1,10 +1,13 @@
 require("dotenv").config();
+
 const express = require("express");
+
 const chats = require("./data/data");
+
 const app = express();
 
 app.get("/", (req, res) => {
-    const response = chats.map((chat) => {
+  const response = chats.map((chat) => {
     return chat.users;
   });
 
@@ -15,7 +18,6 @@ app.get("/api/chat/:id", (req, res) => {
   res.send(singleChat);
 });
 
-const port  = 5000;
-      app.listen(port, () => {
-        console.log(`Server is running on http://localhost:${port}`);
-      });
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
+});

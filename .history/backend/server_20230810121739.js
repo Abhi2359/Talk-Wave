@@ -15,7 +15,7 @@ app.get("/api/chat/:id", (req, res) => {
   res.send(singleChat);
 });
 
-const port  = 5000;
-      app.listen(port, () => {
-        console.log(`Server is running on http://localhost:${port}`);
+const port  = process.env
+      app.listen(process.env.PORT, () => {
+        console.log(`Server is running on http://localhost:${process.env.PORT}`);
       });
