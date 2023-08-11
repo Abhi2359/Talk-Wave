@@ -3,7 +3,7 @@ import { Button, ButtonGroup } from '@chakra-ui/react'
 import  {Route}  from  "react-router-dom"
 import Homepage from './Pages/Homepage'
 import ChatPage from './Pages/ChatPage'
-
+import './App.css'
 
 function App() {
 
