@@ -3,13 +3,12 @@ const express = require("express");
 const chats = require("./data/data");
 const colors  = require('colors')
 const dbConnection = require("./config/db");
-
+const userRoutes= require('./routes/userRoutes')
 dbConnection();
 const app = express();
+app.use(express.json())
 
-app.get("/api/chat", (req, res) => {
-   res.send(chats)
-});
+app.use("/api/user",userRoutes)
 
 
 const port  = 5000;
