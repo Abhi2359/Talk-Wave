@@ -9,7 +9,7 @@ import {
   VStack,
   useToast,
 } from "@chakra-ui/react";
-import axios from "axios"
+import axios from "axios";
 import { useHistory } from "react-router";
 
 const Login = () => {
@@ -49,7 +49,7 @@ const Login = () => {
       const { data } = await axios.post(
         "/api/user/login",
         { email, password },
-        config
+        config,
       );
 
       toast({
@@ -59,7 +59,7 @@ const Login = () => {
         isClosable: true,
         position: "bottom",
       });
-     
+
       localStorage.setItem("userInfo", JSON.stringify(data));
       setLoading(false);
       history.push("/chats");
@@ -102,9 +102,12 @@ const Login = () => {
         </InputGroup>
       </FormControl>
 
-      <Button colorScheme="blue" width="100%" onClick={handleSubmit}
-      
-      isLoading={loading}>
+      <Button
+        colorScheme="blue"
+        width="100%"
+        onClick={handleSubmit}
+        isLoading={loading}
+      >
         Login
       </Button>
       <Button
