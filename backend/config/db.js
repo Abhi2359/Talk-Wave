@@ -1,5 +1,5 @@
-const dbURL = "mongodb+srv://abhishek:abhishek2359@cluster0.exzk3st.mongodb.net/"
-
+require("dotenv").config();
+ const dbURL= process.env.DB_URL; 
 
 const mongoose = require("mongoose");
  
