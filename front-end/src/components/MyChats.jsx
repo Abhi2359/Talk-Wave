@@ -7,7 +7,7 @@ import ChatLoading from "./ChatLoading";
 import { getSender } from "../config/ChatLogics";
 import GroupChatModal from "./miscellaneous/GroupChatModal";
 
-const MyChats = () => {
+const MyChats = ({fetchAgain}) => {
   const [loggedUser, setLoggedUser] = useState();
   const { chats, setChats, selectedChat, setSelectedChat, user } = ChatState();
   const toast = useToast();
@@ -37,10 +37,10 @@ const MyChats = () => {
   useEffect(() => {
     setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
     fetchChats();
-  }, []);
+  }, [fetchAgain]);
   return (
     <Box
-      d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
+      display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
       flexDir="column"
       alignItems="center"
       p={3}
@@ -54,16 +54,16 @@ const MyChats = () => {
         px={3}
         fontSize={{ base: "28px", md: "30px" }}
         fontFamily="Work sans"
-        d="flex"
+        display="flex"
         w="100%"
         justifyContent="space-around"
         alignItems="center"
       >
-        {" "}
+        
         My Chats
         <GroupChatModal>
           <Button
-            d="flex"
+            display="flex"
             fontSize={{ base: "17px", md: "10px", lg: "17px" }}
             rightIcon={<AddIcon />}
             mr={2}
@@ -73,7 +73,7 @@ const MyChats = () => {
         </GroupChatModal>
       </Box>
       <Box
-        d="flex"
+        display="flex"
         flexDir="column"
         p={3}
         bg="#F8F8F8"
