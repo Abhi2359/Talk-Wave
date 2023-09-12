@@ -15,14 +15,12 @@ import {
   Spinner,
   useDisclosure,
   useToast,
-  
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { ChatState } from "../../Context/ChatProvider";
 import UserBadgeItem from "../UserAvatar/UserBadgeItem";
 import UserListItem from "../UserAvatar/UserListItem";
-import axios from "axios"
-
+import axios from "axios";
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -62,30 +60,35 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
+      const payload = {
+        chatId: selectedChat._id,
+        userId: user1._id,
+      };
       const { data } = await axios.put(
-        `/api/chat/groupadd`,
-        {
-          chatId: selectedChat._id,
-          userId: user1._id,
-        },
-        config
+        `/api/chat/groupadd`,payload,config
+       
+        
       );
 
       setSelectedChat(data);
       setFetchAgain(!fetchAgain);
-      setLoading(false);
+    
     } catch (error) {
       toast({
         title: "Error Occured!",
-        description: error.response ? error.response.data.message : "Network error",
+        description: error.response
+          ? error.response.data.message
+          : "Network error",
         status: "error",
         duration: 5000,
         isClosable: true,
         position: "bottom",
       });
+    }finally{
       setLoading(false);
+
+      setGroupChatName("");
     }
-    setGroupChatName("");
   };
   const handleRemove = async (user1) => {
     if (selectedChat.groupAdmin._id !== user._id && user1._id !== user._id) {
@@ -106,19 +109,16 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.put(
-        `/api/chat/groupremove`,
-        {
-          chatId: selectedChat._id,
-          userId: user1._id,
-        },
-        config
-      );
+      const payload = {
+        chatId: selectedChat._id,
+        userId: user1._id,
+      };
+      const { data } = await axios.put(`/api/chat/groupremove`,payload, config);
 
       user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
       setFetchAgain(!fetchAgain);
       fetchMessages();
-      setLoading(false);
+      
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -128,9 +128,12 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
         isClosable: true,
         position: "bottom",
       });
-      setLoading(false);
     }
-    setGroupChatName("");
+    finally{
+      setLoading(false);
+
+      setGroupChatName("");
+    }
   };
   const handleRename = async () => {
     if (!groupChatName) return;
@@ -141,10 +144,14 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const {data} = await axios.put('/api/chat/rename',{chatId:selectedChat._id,chatName:groupChatName},config)
+      const { data } = await axios.put(
+        "/api/chat/rename",
+        { chatId: selectedChat._id, chatName: groupChatName },
+        config
+      );
       setSelectedChat(data);
       setFetchAgain(!fetchAgain);
-      setRenameLoading(false)
+      setRenameLoading(false);
     } catch (error) {
       toast({
         title: "Error Occured!",
@@ -154,9 +161,9 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain }) => {
         isClosable: true,
         position: "bottom",
       });
-      setRenameLoading(false)
+      setRenameLoading(false);
     }
-    setGroupChatName('')
+    setGroupChatName("");
   };
   const handleSearch = async (query) => {
     setSearch(query);

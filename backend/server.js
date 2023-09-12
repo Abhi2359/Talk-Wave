@@ -6,10 +6,13 @@ const dbConnection = require("./config/db");
 const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const { notFound, errorHandler } = require("./middlewares/errrorMiddleware");
+const cors = require('cors')
 dbConnection();
 const app = express();
 app.use(express.json());
 
+
+app.use(cors());
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use(notFound);
