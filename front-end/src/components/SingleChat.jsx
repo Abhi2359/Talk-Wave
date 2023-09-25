@@ -15,7 +15,13 @@ import ProfileModal from "./miscellaneous/ProfileModal";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import axios from "axios";
 import ScrollableChat from "./ScrollableChat";
-//import './styles.css'
+import './styles.css'
+import io from 'socket.io-client'
+
+const ENDPOINT = "http://localhost:5000"
+let socket ,selectedChatCompare;
+
+
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat } = ChatState();
   const [messages, setMessages] = useState([]);
@@ -32,7 +38,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
       };
       setLoading(true);
-      const { data } = await axios.get(`/api/message/${selectedChat._id}`,config);
+      const { data } = await axios.get(
+        `/api/message/${selectedChat._id}`,
+        config
+      );
       console.log(messages);
       setMessages(data);
       setLoading(false);
@@ -47,9 +56,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       });
     }
   };
-  useEffect(()=>{
+  useEffect(() => {
     fetchMessages();
-  },[selectedChat])
+  }, [selectedChat]);
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
       try {
@@ -83,7 +92,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
       }
     }
   };
-
+ 
+  useEffect(()=>{
+socket = io(ENDPOINT)
+  },[])
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
   };
@@ -143,7 +155,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               />
             ) : (
               <div className="messages">
-                <ScrollableChat messages= {messages}/>
+                <ScrollableChat messages={messages} />
               </div>
             )}
             <FormControl onKeyDown={sendMessage} isRequired mt={3}>

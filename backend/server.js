@@ -7,11 +7,10 @@ const userRoutes = require("./routes/userRoutes");
 const chatRoutes = require("./routes/chatRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const { notFound, errorHandler } = require("./middlewares/errrorMiddleware");
-const cors = require('cors')
+const cors = require("cors");
 dbConnection();
 const app = express();
 app.use(express.json());
-
 
 app.use(cors());
 app.use("/api/user", userRoutes);
@@ -21,7 +20,19 @@ app.use(notFound);
 app.use(errorHandler);
 console.log("port", process.env.PORT);
 const port = process.env.PORT;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`.yellow.bold);
-  
 });
+
+const io = require("socket.io")(server, {
+  pingTimeout: 60000,
+  cors: {
+    origin: "http://localhost:5173",
+  },
+});
+
+io.on("connection",(socket)=>{
+console.log('Connected to socket.io');
+
+
+})
